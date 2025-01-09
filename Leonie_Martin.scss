@@ -22,14 +22,14 @@ $toc-depth: 2;
 		page: preliminary; // not transcriber generated
 		-obfl-toc-range: document;
 		-daisy-flow: document-toc;
-		&::duplicate {
+		&::-daisy-duplicate {
 			display: -obfl-toc;
 			page: preliminary;
 			-obfl-toc-range: volume;
 			-daisy-flow: volume-toc;
 		}
 		&::-obfl-on-toc-start,
-		&::duplicate::-obfl-on-toc-start {
+		&::-daisy-duplicate::-obfl-on-toc-start {
 			content: "Contents";
 			display: block;
 			text-align: center;
