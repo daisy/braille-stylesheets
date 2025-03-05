@@ -1,4 +1,4 @@
-EPUB := Leonie_Martin.epub
+EPUB := Leonie_Martin.epub Hope_V1.4.epub
 CSS := $(patsubst %.epub,%.scss,$(EPUB))
 BRF := $(patsubst %.epub,result/%_vol-1.brf,$(EPUB))
 PIPELINE_VERSION := 1.14.21

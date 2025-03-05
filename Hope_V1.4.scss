@@ -1,0 +1,8 @@
+@import "xavier-society";
+
+// make everything before the section that starts with page 10 preliminary content
+
+body:has(~ body:has(#page10)),
+section:has(~ section:has(#page10)) {
+	page: preliminary;
+}
