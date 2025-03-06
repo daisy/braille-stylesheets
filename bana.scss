@@ -127,6 +127,9 @@ ul, ol {
 .page-special,
 [epub|type='pagebreak'] {
 	display: block;
+	&:-daisy-top-of-page {
+		display: none;
+	}
 	&::before {
 		content: leader("⠤"); // FIXME: remove space before number
 	}
