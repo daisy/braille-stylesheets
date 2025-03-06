@@ -135,6 +135,12 @@ ul, ol {
 	&[title] {
 		string-set: print-page attr(title);
 	}
+	&[aria-label] {
+		&:empty::before {
+			content: leader("⠤") attr(aria-label);
+		}
+		string-set: print-page attr(aria-label);
+	}
 }
 
 $toc-depth: 2 !default;
