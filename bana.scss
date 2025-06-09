@@ -33,6 +33,22 @@ $allow-text-overflow-trimming: true;
 	}
 }
 
+@page toc {
+	// do not allow TOC entries on same line as page number (footer)
+	margin-bottom: 1;
+	// the rest is the same as transcriber-generated
+	counter-increment: transcriber-generated-page;
+	@top-center {
+		content: none;
+	}
+	@top-right {
+		content: none;
+	}
+	@bottom-right {
+		content: "   t" counter(transcriber-generated-page);
+	}
+}
+
 @page preliminary {
 	counter-increment: preliminary-page;
 	@top-center {
@@ -151,7 +167,7 @@ $toc-depth: 2 !default;
 
 #generated-document-toc,
 #generated-volume-toc {
-	page: transcriber-generated;
+	page: toc;
 	&::-obfl-on-toc-start {
 		content: "Contents";
 		display: block;
