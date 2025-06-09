@@ -36,7 +36,12 @@ $(BRF) : result/%_vol-1.brf : %.epub %.scss xavier-society.scss bana.scss | pipe
 	                        --source "'$${mount_point}/$<'"                     \
 	                        --output-file-format "'(locale:en-US)(pad:BEFORE)'" \
 	                        --stylesheet "'$${mount_point}/$(word 2,$^)'"       \
-	                        --stylesheet-parameters "'(reuse-print-toc: true)'" \
+	                        --stylesheet-parameters "'(                         \
+	                          reuse-print-toc: true,                            \
+	                          maximum-number-of-sheets: 70,                     \
+	                          allow-volume-break-inside-leaf-section-factor: 5, \
+	                          prefer-volume-break-before-higher-level-factor: 0 \
+	                        )'"                                                 \
 	                        ;                                                   \
 	if ! [ -e "$@" ]; then                                                      \
 	    if [ $${docker_mode} = 0 ]; then                                        \
