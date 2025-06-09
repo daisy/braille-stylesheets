@@ -181,9 +181,9 @@ $toc-depth: 2 !default;
 		margin: 1 3;
 	}
 	li {
-		-obfl-right-text-indent: 4;
+		-obfl-right-text-indent: 6;
 		a[href]::after {
-			content: " " leader("⠐") " " target-counter(attr(href), page);
+			content: " " leader("⠐") " " target-counter(attr(href), page);
 		}
 		br::before { content: " " }
 	}
