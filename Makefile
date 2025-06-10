@@ -1,5 +1,6 @@
 EPUB := Leonie_Martin.epub Hope_V1.4.epub
 CSS := $(patsubst %.epub,%.scss,$(EPUB))
+OBFL := $(patsubst %.epub,obfl/%.obfl,$(EPUB))
 BRF := $(patsubst %.epub,result/%_vol-1.brf,$(EPUB))
 PIPELINE_VERSION := 1.15.1
 MOUNT_POINT := /mnt
@@ -33,9 +34,28 @@ dp2 =                                                                           
 	           --starting false                                                 \
 	           '$1';
 
-$(BRF) : result/%_vol-1.brf : %.epub %.scss xavier-society.scss bana.scss | pipeline-up
-	rm -f $@ $(patsubst result/%_vol-1.brf,result/%_vol-*.brf,$@) &&              \
+$(BRF) : result/%_vol-1.brf : obfl/%.obfl
+	if [[ "$<" -nt "$@" ]]; then                                                     \
+	    rm -f $@ $(patsubst result/%_vol-1.brf,result/%_vol-*.brf,$@) &&             \
+	    $(call dp2, obfl-to-pef --persistent                                         \
+	                            --output "$${mount_point}"                           \
+	                            --source "$${mount_point}/$<"                        \
+	                            --output-file-format "(locale:en-US)(pad:BEFORE)"    \
+	                            --allow-text-overflow-trimming true)                 \
+	    if ! [ -e "$@" ]; then                      \
+	        if [ $${docker_mode} = 0 ]; then                                         \
+	            docker logs pipeline;                                                \
+	        fi;                                                                      \
+	        exit 1;                                                                  \
+	    else                                                                         \
+	        touch $(patsubst result/%_vol-1.brf,result/%_vol-*.brf,$@);              \
+	    fi                                                                           \
+	fi
+
+$(OBFL) : obfl/%.obfl : %.epub %.scss xavier-society.scss bana.scss | pipeline-up
+	rm -f $@ $(patsubst obfl/%.obfl,result/%_vol-*.brf,$@) &&                     \
 	$(call dp2, epub3-to-pef --persistent                                         \
+	                         --include-obfl true                                  \
 	                         --output "$${mount_point}"                           \
 	                         --source "$${mount_point}/$<"                        \
 	                         --output-file-format "(locale:en-US)(pad:BEFORE)"    \
@@ -46,13 +66,13 @@ $(BRF) : result/%_vol-1.brf : %.epub %.scss xavier-society.scss bana.scss | pipe
 	                           allow-volume-break-inside-leaf-section-factor: 5,  \
 	                           prefer-volume-break-before-higher-level-factor: 0  \
 	                         )")                                                  \
-	if ! [ -e "$@" ]; then                                                        \
+	if ! [ -e "$(patsubst obfl/%.obfl,result/%_vol-1.brf,$@)" ]; then             \
 	    if [ $${docker_mode} = 0 ]; then                                          \
 	        docker logs pipeline;                                                 \
 	    fi;                                                                       \
 	    exit 1;                                                                   \
 	else                                                                          \
-	    touch $(patsubst result/%_vol-1.brf,result/%_vol-*.brf,$@);               \
+	    touch $(patsubst obfl/%.obfl,result/%_vol-*.brf,$@);                      \
 	fi
 
 $(CSS) : | xavier-society.scss
@@ -76,7 +96,7 @@ Leonie_Martin.epub :
 
 .PHONY : clean
 clean :
-	rm -rf result
+	rm -rf result obfl
 
 .PHONY : pipeline-up
 pipeline-up :
