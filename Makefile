@@ -8,7 +8,7 @@ PORT=8181
 .PHONY : run-testsuite
 run-testsuite : $(BRF)
 
-$(BRF) : result/%_vol-1.brf : %.epub %.scss xavier-society.scss bana.scss | pipeline-up
+dp2 =                                                                           \
 	test "$$(                                                                   \
 	    docker container inspect -f '{{.State.Running}}' pipeline 2>/dev/null   \
 	)" = true;                                                                  \
@@ -31,23 +31,28 @@ $(BRF) : result/%_vol-1.brf : %.epub %.scss xavier-society.scss bana.scss | pipe
 	           daisyorg/pipeline:$(PIPELINE_VERSION)                            \
 	           $${host_option}                                                  \
 	           --starting false                                                 \
-	           epub3-to-pef --persistent                                        \
-	                        --output "'$${mount_point}'"                        \
-	                        --source "'$${mount_point}/$<'"                     \
-	                        --output-file-format "'(locale:en-US)(pad:BEFORE)'" \
-	                        --stylesheet "'$${mount_point}/$(word 2,$^)'"       \
-	                        --stylesheet-parameters "'(                         \
-	                          reuse-print-toc: true,                            \
-	                          maximum-number-of-sheets: 70,                     \
-	                          allow-volume-break-inside-leaf-section-factor: 5, \
-	                          prefer-volume-break-before-higher-level-factor: 0 \
-	                        )'"                                                 \
-	                        ;                                                   \
-	if ! [ -e "$@" ]; then                                                      \
-	    if [ $${docker_mode} = 0 ]; then                                        \
-	        docker logs pipeline;                                               \
-	    fi;                                                                     \
-	    exit 1;                                                                 \
+	           '$1';
+
+$(BRF) : result/%_vol-1.brf : %.epub %.scss xavier-society.scss bana.scss | pipeline-up
+	rm -f $@ $(patsubst result/%_vol-1.brf,result/%_vol-*.brf,$@) &&              \
+	$(call dp2, epub3-to-pef --persistent                                         \
+	                         --output "$${mount_point}"                           \
+	                         --source "$${mount_point}/$<"                        \
+	                         --output-file-format "(locale:en-US)(pad:BEFORE)"    \
+	                         --stylesheet "$${mount_point}/$(word 2,$^)"          \
+	                         --stylesheet-parameters "(                           \
+	                           reuse-print-toc: true,                             \
+	                           maximum-number-of-sheets: 70,                      \
+	                           allow-volume-break-inside-leaf-section-factor: 5,  \
+	                           prefer-volume-break-before-higher-level-factor: 0  \
+	                         )")                                                  \
+	if ! [ -e "$@" ]; then                                                        \
+	    if [ $${docker_mode} = 0 ]; then                                          \
+	        docker logs pipeline;                                                 \
+	    fi;                                                                       \
+	    exit 1;                                                                   \
+	else                                                                          \
+	    touch $(patsubst result/%_vol-1.brf,result/%_vol-*.brf,$@);               \
 	fi
 
 $(CSS) : | xavier-society.scss
