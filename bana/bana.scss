@@ -129,7 +129,7 @@ li {
 	margin-left: 2;
 }
 
-ul, ol {
+ul, ol, list {
 	margin-top: 1;
 	margin-bottom: 1;
 	orphans: 2;
@@ -147,7 +147,8 @@ ul, ol {
 .page-front,
 .page-normal,
 .page-special,
-[epub|type='pagebreak'] {
+[epub|type='pagebreak'],
+pagenum {
 	display: block;
 	&:-daisy-top-of-page {
 		display: none;
@@ -193,7 +194,7 @@ $toc-depth: 2 !default;
 		}
 		br::before { content: " " }
 	}
-	ul, ol {
+	ul, ol, list {
 		margin: 0;
 	}
 }

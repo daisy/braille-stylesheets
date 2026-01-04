@@ -5,6 +5,7 @@ This style sheet implements the formatting rules of the [Braille Authority of No
 For input formats:
 
 - HTML
+- DTBook
 
 For output formats:
 
