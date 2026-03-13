@@ -2,7 +2,7 @@ EPUB := Leonie_Martin.epub Hope_V1.4.epub
 CSS := $(patsubst %.epub,%.scss,$(EPUB))
 OBFL := $(patsubst %.epub,obfl/%.obfl,$(EPUB))
 BRF := $(patsubst %.epub,result/%_vol-1.brf,$(EPUB))
-PIPELINE_VERSION := 1.15.1
+PIPELINE_VERSION := 1.15.3
 MOUNT_POINT := /mnt
 PORT=8181
 
