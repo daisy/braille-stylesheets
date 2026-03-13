@@ -42,10 +42,7 @@ $(BRF) : result/%_vol-1.brf : obfl/%.obfl
 	                            --source "$${mount_point}/$<"                        \
 	                            --output-file-format "(locale:en-US)(pad:BEFORE)"    \
 	                            --allow-text-overflow-trimming true)                 \
-	    if ! [ -e "$@" ]; then                      \
-	        if [ $${docker_mode} = 0 ]; then                                         \
-	            docker logs pipeline;                                                \
-	        fi;                                                                      \
+	    if ! [ -e "$@" ]; then                                                       \
 	        exit 1;                                                                  \
 	    else                                                                         \
 	        touch $(patsubst result/%_vol-1.brf,result/%_vol-*.brf,$@);              \
@@ -67,9 +64,6 @@ $(OBFL) : obfl/%.obfl : %.epub %.scss xavier-society.scss bana.scss | pipeline-u
 	                           prefer-volume-break-before-higher-level-factor: 0  \
 	                         )")                                                  \
 	if ! [ -e "$(patsubst obfl/%.obfl,result/%_vol-1.brf,$@)" ]; then             \
-	    if [ $${docker_mode} = 0 ]; then                                          \
-	        docker logs pipeline;                                                 \
-	    fi;                                                                       \
 	    exit 1;                                                                   \
 	else                                                                          \
 	    touch $(patsubst obfl/%.obfl,result/%_vol-*.brf,$@);                      \
@@ -135,3 +129,8 @@ pipeline-up :
 pipeline-down :
 	docker stop pipeline;  \
 	docker rm pipeline
+
+.PHONY : log
+log : pipeline.log
+pipeline.log ::
+	docker logs pipeline > $@
