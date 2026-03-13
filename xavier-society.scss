@@ -1,0 +1,59 @@
+@import "bana";
+
+@-daisy-text-transform {
+	type: literary;
+	contraction: full;
+}
+
+head {
+	title {
+		string-set: title content()
+		            running-header content();
+	}
+
+	creator {
+		string-set: creator content();
+	}
+}
+
+.brl-title-page {
+	-daisy-flow: transcriber-generated;
+	page: transcriber-generated;
+	counter-set: transcriber-generated-page 1;
+	display: block;
+	page-break-before: always;
+
+	.title,
+	.creator,
+	.volume {
+		text-align: center;
+	}
+
+	.title span:blank::after {
+		content: string(title);
+	}
+
+	.creator span:blank::after {
+		content: string(creator);
+	}
+
+	.volume-number::after {
+		content: counter(volume);
+	}
+}
+
+.brl-symbols-list {
+	-daisy-flow: transcriber-generated;
+	page: transcriber-generated;
+	display: block;
+	page-break-before: always;
+
+	h1 {
+		text-transform: uppercase;
+		margin-top: 0;
+	}
+
+	.symbol {
+		-daisy-text-transform: none;
+	}
+}

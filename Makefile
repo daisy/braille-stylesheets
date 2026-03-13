@@ -78,18 +78,20 @@ $(OBFL) : obfl/%.obfl : %.epub %.scss xavier-society.scss bana.scss | pipeline-u
 $(CSS) : | xavier-society.scss
 xavier-society.scss : | bana.scss
 
-local_bana_branch = $(shell git remote show origin | grep 'pushes to bana ' | sed -e 's/  *//' -e 's/ .*//')
-LOCAL_BANA_BRANCH = $(eval LOCAL_BANA_BRANCH := $$(local_bana_branch))$(LOCAL_BANA_BRANCH)
+local_main_branch = $(shell git remote show origin | grep 'pushes to main ' | sed -e 's/  *//' -e 's/ .*//')
+LOCAL_MAIN_BRANCH = $(eval LOCAL_MAIN_BRANCH := $$(local_main_branch))$(LOCAL_MAIN_BRANCH)
 
-xavier-society.scss bana.scss :
-	BANA_BRANCH=$(LOCAL_BANA_BRANCH);         \
-	BANA_BRANCH=$${BANA_BRANCH:-origin/bana};  \
-	git checkout $${BANA_BRANCH} -- $@;       \
-	git restore --staged $@
+bana.scss :
+	MAIN_BRANCH=$(LOCAL_MAIN_BRANCH);          \
+	MAIN_BRANCH=$${MAIN_BRANCH:-origin/main};  \
+	git checkout $${MAIN_BRANCH} -- bana/$@;   \
+	git restore --staged bana/$@
+	mv bana/$@ $@
+	[ "$(ls -A bana)" ] || rm -r bana
 
 .PHONY : get-latest-bana-css
 get-latest-bana-css :
-	$(MAKE) -B bana.scss xavier-society.scss
+	$(MAKE) -B bana.scss
 
 Leonie_Martin.epub :
 	curl -L "https://github.com/PaulXSB/Daisy-Pipeline-UEB/raw/refs/heads/main/Leonie%20Martin/L%C3%A9onie%20Martin%20Remediated.epub" -o $@
