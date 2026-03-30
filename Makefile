@@ -23,16 +23,20 @@ dp2 =                                                                           
 	    host_option="--host http://localhost";                                  \
 	    mount_point="$(CURDIR)";                                                \
 	fi &&                                                                       \
-	eval                                                                        \
-	docker run --name cli                                                       \
-	           --rm                                                             \
-	           $${network_option}                                               \
-	           -v "'$(CURDIR):$${mount_point}:rw'"                              \
-	           --entrypoint /opt/daisy-pipeline2/cli/dp2                        \
-	           daisyorg/pipeline:$(PIPELINE_VERSION)                            \
-	           $${host_option}                                                  \
-	           --starting false                                                 \
-	           '$1';
+	if which dp2 >/dev/null; then                                               \
+	    eval dp2 '$1';                                                          \
+	else                                                                        \
+	    eval                                                                    \
+	    docker run --name cli                                                   \
+	               --rm                                                         \
+	               $${network_option}                                           \
+	               -v "'$(CURDIR):$${mount_point}:rw'"                          \
+	               --entrypoint /opt/daisy-pipeline2/cli/dp2                    \
+	               daisyorg/pipeline:$(PIPELINE_VERSION)                        \
+	               $${host_option}                                              \
+	               --starting false                                             \
+	               '$1';                                                        \
+	fi;
 
 $(BRF) : result/%_vol-1.brf : obfl/%.obfl
 	if [[ "$<" -nt "$@" ]]; then                                                     \
