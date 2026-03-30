@@ -63,9 +63,12 @@ section.introduction {
 
 By default, `h1` elements are centered, `h2` elements are cell-5 headings, and elements `h3` to `h6` are cell-7 headings. This mapping may be changed, using the Sass variable `$h-mapping`.
 
+**Important**: set the variable _after_ importing bana.scss to override the default.
+
 Example:
 
 ```scss
+@import "bana";
 $h-mapping: (
     h1: [ h1, h2, h3 ],
     h2: h4,
