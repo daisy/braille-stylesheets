@@ -8,10 +8,6 @@ $allow-text-overflow-trimming: true;
 
 @namespace epub url(http://www.idpf.org/2007/ops);
 
-@-daisy-text-transform {
-	system: ueb;
-}
-
 @page {
 	size: 40 25;
 	margin-bottom: 0;

@@ -1,6 +1,6 @@
 # Braille style sheet for United States and Canada (BANA)
 
-This style sheet implements the formatting rules of the [Braille Authority of North America (BANA)](https://www.brailleauthority.org/). [UEB](https://iceb.org/) is used as the braille code for all text.
+This style sheet implements the formatting rules of the [Braille Authority of North America (BANA)](https://www.brailleauthority.org/). Note that this does not select [UEB](https://iceb.org/) as the braille code automatically.
 
 For input formats:
 
