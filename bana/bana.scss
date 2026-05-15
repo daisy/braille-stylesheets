@@ -9,7 +9,7 @@ $allow-text-overflow-trimming: true;
 @namespace epub url(http://www.idpf.org/2007/ops);
 
 @page {
-	size: 40 25;
+	size: 40ch 25em;
 	margin-bottom: 0;
 	@top-center {
 		content: string(running-header); // the running-header text must be set by the custom style sheet
@@ -83,21 +83,21 @@ $allow-text-overflow-trimming: true;
 %h1 {
 	page-break-before: always;
 	text-align: center;
-	margin-left: 3;
-	margin-right: 3;
-	margin-bottom: 1;
+	margin-left: 3ch;
+	margin-right: 3ch;
+	margin-bottom: 1em;
 }
 
 %h2 {
-	margin-left: 4;
+	margin-left: 4ch;
 }
 
 %h3 {
-	margin-left: 6;
+	margin-left: 6ch;
 }
 
 %h1, %h2, %h3 {
-	margin-top: 1;
+	margin-top: 1em;
 	page-break-after: avoid;
 }
 
@@ -117,17 +117,17 @@ $h-mapping: (
 }
 
 p {
-	text-indent: 2;
+	text-indent: 2ch;
 }
 
 li {
-	text-indent: -2;
-	margin-left: 2;
+	text-indent: -2ch;
+	margin-left: 2ch;
 }
 
 ul, ol, list {
-	margin-top: 1;
-	margin-bottom: 1;
+	margin-top: 1em;
+	margin-bottom: 1em;
 	orphans: 2;
 
 	%h1 + &,
@@ -152,7 +152,7 @@ pagenum {
 	&::before {
 		content: leader("⠤"); // FIXME: remove space before number
 	}
-	margin-left: -40; // this is to make sure the line always starts all the way on the left
+	margin-left: -40ch; // this is to make sure the line always starts all the way on the left
 	string-set: print-page content();
 	&[title] {
 		string-set: print-page attr(title);
@@ -175,13 +175,13 @@ $toc-depth: 2 !default;
 		content: "Contents";
 		display: block;
 		text-align: center;
-		margin: 0 3 1 3;
+		margin: 0 3ch 1em 3ch;
 	}
 	&::-obfl-on-volume-start {
 		content: "Volume " counter(-obfl-started-volume-number);
 		display: block;
 		text-align: center;
-		margin: 1 3;
+		margin: 1em 3ch;
 	}
 	li {
 		-obfl-right-text-indent: 6;
