@@ -4,193 +4,196 @@
  * For more information see https://daisy.github.io/braille-stylesheets/bana
  */
 
-$allow-text-overflow-trimming: true;
-
 @namespace epub url(http://www.idpf.org/2007/ops);
 
-@page {
-	size: 40ch 25em;
-	margin-bottom: 0;
-	@top-center {
-		content: string(running-header); // the running-header text must be set by the custom style sheet
-	}
-	@top-right {
-		content: "   " string(print-page);
-	}
-	@bottom-right {
-		content: "   " counter(page);
-	}
-}
+@media embossed {
 
-@page transcriber-generated {
-	counter-increment: transcriber-generated-page;
-	@top-center {
-		content: none;
-	}
-	@top-right {
-		content: none;
-	}
-	@bottom-right {
-		content: "   t" counter(transcriber-generated-page);
-	}
-}
+	$allow-text-overflow-trimming: true;
 
-@page toc {
-	// do not allow TOC entries on same line as page number (footer)
-	margin-bottom: 1;
-	// the rest is the same as transcriber-generated
-	counter-increment: transcriber-generated-page;
-	@top-center {
-		content: none;
-	}
-	@top-right {
-		content: none;
-	}
-	@bottom-right {
-		content: "   t" counter(transcriber-generated-page);
-	}
-}
-
-@page preliminary {
-	counter-increment: preliminary-page;
-	@top-center {
-		content: none;
-	}
-	@top-right {
-		content: none;
-	}
-	@bottom-right {
-		content: "   p" counter(preliminary-page);
-	}
-}
-
-@-daisy-volume {
-	@begin {
-		content: -daisy-flow(transcriber-generated, document)
-		         -daisy-flow(volume-toc, document);
-		counter-set: transcriber-generated-page 1
-		             preliminary-page 1;
-	}
-}
-@-daisy-volume:first {
-	@begin {
-		content: -daisy-flow(transcriber-generated, document) // the transcriber generated and other preliminary
-		         -daisy-flow(document-toc, document)          // content must be set by the custom style sheet,
-		         -daisy-flow(preliminary, document);          // and must be given the corresponding page style
-	}
-}
-
-%h1 {
-	page-break-before: always;
-	text-align: center;
-	margin-left: 3ch;
-	margin-right: 3ch;
-	margin-bottom: 1em;
-}
-
-%h2 {
-	margin-left: 4ch;
-}
-
-%h3 {
-	margin-left: 6ch;
-}
-
-%h1, %h2, %h3 {
-	margin-top: 1em;
-	page-break-after: avoid;
-}
-
-$h-mapping: (
-	h1: h1,
-	h2: h2,
-	h3: [h3, h4, h5, h6]
-);
-
-@for $rank from 1 through 3 {
-	@if map-has-key($h-mapping, h#{$rank}) {
-		$selector: map-get($h-mapping, h#{$rank});
-		#{$selector} {
-			@extend %h#{$rank};
+	@page {
+		size: 40ch 25em;
+		margin-bottom: 0;
+		@top-center {
+			content: string(running-header); // the running-header text must be set by the custom style sheet
+		}
+		@top-right {
+			content: "   " string(print-page);
+		}
+		@bottom-right {
+			content: "   " counter(page);
 		}
 	}
-}
 
-p {
-	text-indent: 2ch;
-}
-
-li {
-	text-indent: -2ch;
-	margin-left: 2ch;
-}
-
-ul, ol, list {
-	margin-top: 1em;
-	margin-bottom: 1em;
-	orphans: 2;
-
-	%h1 + &,
-	%h2 + &,
-	%h3 + & {
-		margin-top: 0;
-		> li:first-child {
-			page-break-inside: avoid;
+	@page transcriber-generated {
+		counter-increment: transcriber-generated-page;
+		@top-center {
+			content: none;
+		}
+		@top-right {
+			content: none;
+		}
+		@bottom-right {
+			content: "   t" counter(transcriber-generated-page);
 		}
 	}
-}
 
-.page-front,
-.page-normal,
-.page-special,
-[epub|type='pagebreak'],
-pagenum {
-	display: block;
-	&:-daisy-top-of-page {
-		display: none;
-	}
-	&::before {
-		content: leader("⠤"); // FIXME: remove space before number
-	}
-	margin-left: -40ch; // this is to make sure the line always starts all the way on the left
-	string-set: print-page content();
-	&[title] {
-		string-set: print-page attr(title);
-	}
-	&[aria-label] {
-		&:empty::before {
-			content: leader("⠤") attr(aria-label);
+	@page toc {
+		// do not allow TOC entries on same line as page number (footer)
+		margin-bottom: 1;
+		// the rest is the same as transcriber-generated
+		counter-increment: transcriber-generated-page;
+		@top-center {
+			content: none;
 		}
-		string-set: print-page attr(aria-label);
+		@top-right {
+			content: none;
+		}
+		@bottom-right {
+			content: "   t" counter(transcriber-generated-page);
+		}
 	}
-}
 
-$toc-depth: 2 !default;
-@import "http://www.daisy.org/pipeline/modules/braille/html-to-pef/_generate-toc.scss";
+	@page preliminary {
+		counter-increment: preliminary-page;
+		@top-center {
+			content: none;
+		}
+		@top-right {
+			content: none;
+		}
+		@bottom-right {
+			content: "   p" counter(preliminary-page);
+		}
+	}
 
-#generated-document-toc,
-#generated-volume-toc {
-	page: toc;
-	&::-obfl-on-toc-start {
-		content: "Contents";
-		display: block;
+	@-daisy-volume {
+		@begin {
+			content: -daisy-flow(transcriber-generated, document)
+			         -daisy-flow(volume-toc, document);
+			counter-set: transcriber-generated-page 1
+			             preliminary-page 1;
+		}
+	}
+	@-daisy-volume:first {
+		@begin {
+			content: -daisy-flow(transcriber-generated, document) // the transcriber generated and other preliminary
+			         -daisy-flow(document-toc, document)          // content must be set by the custom style sheet,
+			         -daisy-flow(preliminary, document);          // and must be given the corresponding page style
+		}
+	}
+
+	%h1 {
+		page-break-before: always;
 		text-align: center;
-		margin: 0 3ch 1em 3ch;
+		margin-left: 3ch;
+		margin-right: 3ch;
+		margin-bottom: 1em;
 	}
-	&::-obfl-on-volume-start {
-		content: "Volume " counter(-obfl-started-volume-number);
-		display: block;
-		text-align: center;
-		margin: 1em 3ch;
+
+	%h2 {
+		margin-left: 4ch;
 	}
+
+	%h3 {
+		margin-left: 6ch;
+	}
+
+	%h1, %h2, %h3 {
+		margin-top: 1em;
+		page-break-after: avoid;
+	}
+
+	$h-mapping: (
+		h1: h1,
+		h2: h2,
+		h3: [h3, h4, h5, h6]
+	);
+
+	@for $rank from 1 through 3 {
+		@if map-has-key($h-mapping, h#{$rank}) {
+			$selector: map-get($h-mapping, h#{$rank});
+			#{$selector} {
+				@extend %h#{$rank};
+			}
+		}
+	}
+
+	p {
+		text-indent: 2ch;
+	}
+
 	li {
-		-obfl-right-text-indent: 6;
-		a[href]::after {
-			content: " " leader("⠐") " " target-counter(attr(href), page);
-		}
-		br::before { content: " " }
+		text-indent: -2ch;
+		margin-left: 2ch;
 	}
+
 	ul, ol, list {
-		margin: 0;
+		margin-top: 1em;
+		margin-bottom: 1em;
+		orphans: 2;
+
+		%h1 + &,
+		%h2 + &,
+		%h3 + & {
+			margin-top: 0;
+			> li:first-child {
+				page-break-inside: avoid;
+			}
+		}
+	}
+
+	.page-front,
+	.page-normal,
+	.page-special,
+	[epub|type='pagebreak'],
+	pagenum {
+		display: block;
+		&:-daisy-top-of-page {
+			display: none;
+		}
+		&::before {
+			content: leader("⠤"); // FIXME: remove space before number
+		}
+		margin-left: -40ch; // this is to make sure the line always starts all the way on the left
+		string-set: print-page content();
+		&[title] {
+			string-set: print-page attr(title);
+		}
+		&[aria-label] {
+			&:empty::before {
+				content: leader("⠤") attr(aria-label);
+			}
+			string-set: print-page attr(aria-label);
+		}
+	}
+
+	$toc-depth: 2 !default;
+	@import "http://www.daisy.org/pipeline/modules/braille/html-to-pef/_generate-toc.scss";
+
+	#generated-document-toc,
+	#generated-volume-toc {
+		page: toc;
+		&::-obfl-on-toc-start {
+			content: "Contents";
+			display: block;
+			text-align: center;
+			margin: 0 3ch 1em 3ch;
+		}
+		&::-obfl-on-volume-start {
+			content: "Volume " counter(-obfl-started-volume-number);
+			display: block;
+			text-align: center;
+			margin: 1em 3ch;
+		}
+		li {
+			-obfl-right-text-indent: 6;
+			a[href]::after {
+				content: " " leader("⠐") " " target-counter(attr(href), page);
+			}
+			br::before { content: " " }
+		}
+		ul, ol, list {
+			margin: 0;
+		}
 	}
 }
