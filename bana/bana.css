@@ -5,6 +5,48 @@
  * For more information see https://daisy.github.io/braille-stylesheets/bana
  */
 @namespace epub url(http://www.idpf.org/2007/ops);
+h1 {
+  page-break-before: always;
+  text-align: center;
+  margin-left: 3ch;
+  margin-right: 3ch;
+  margin-bottom: 1em;
+}
+
+h2 {
+  margin-left: 4ch;
+}
+
+h3, h4, h5, h6 {
+  margin-left: 6ch;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1em;
+  page-break-after: avoid;
+}
+
+p {
+  text-indent: 2ch;
+}
+
+li {
+  text-indent: -2ch;
+  margin-left: 2ch;
+}
+
+ul, ol, list {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  orphans: 2;
+}
+h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul, h1 + ol, h2 + ol, h3 + ol, h4 + ol, h5 + ol, h6 + ol, h1 + list, h2 + list, h3 + list, h4 + list, h5 + list, h6 + list {
+  margin-top: 0;
+}
+h1 + ul > li:first-child, h2 + ul > li:first-child, h3 + ul > li:first-child, h4 + ul > li:first-child, h5 + ul > li:first-child, h6 + ul > li:first-child, h1 + ol > li:first-child, h2 + ol > li:first-child, h3 + ol > li:first-child, h4 + ol > li:first-child, h5 + ol > li:first-child, h6 + ol > li:first-child, h1 + list > li:first-child, h2 + list > li:first-child, h3 + list > li:first-child, h4 + list > li:first-child, h5 + list > li:first-child, h6 + list > li:first-child {
+  page-break-inside: avoid;
+}
+
 @media embossed {
   @page {
     size: 40ch 25em;
@@ -66,41 +108,6 @@
     @begin {
       content: -daisy-flow(transcriber-generated, document) -daisy-flow(document-toc, document) -daisy-flow(preliminary, document);
     }
-  }
-  h1 {
-    page-break-before: always;
-    text-align: center;
-    margin-left: 3ch;
-    margin-right: 3ch;
-    margin-bottom: 1em;
-  }
-  h2 {
-    margin-left: 4ch;
-  }
-  h3, h4, h5, h6 {
-    margin-left: 6ch;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    margin-top: 1em;
-    page-break-after: avoid;
-  }
-  p {
-    text-indent: 2ch;
-  }
-  li {
-    text-indent: -2ch;
-    margin-left: 2ch;
-  }
-  ul, ol, list {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    orphans: 2;
-  }
-  h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul, h1 + ol, h2 + ol, h3 + ol, h4 + ol, h5 + ol, h6 + ol, h1 + list, h2 + list, h3 + list, h4 + list, h5 + list, h6 + list {
-    margin-top: 0;
-  }
-  h1 + ul > li:first-child, h2 + ul > li:first-child, h3 + ul > li:first-child, h4 + ul > li:first-child, h5 + ul > li:first-child, h6 + ul > li:first-child, h1 + ol > li:first-child, h2 + ol > li:first-child, h3 + ol > li:first-child, h4 + ol > li:first-child, h5 + ol > li:first-child, h6 + ol > li:first-child, h1 + list > li:first-child, h2 + list > li:first-child, h3 + list > li:first-child, h4 + list > li:first-child, h5 + list > li:first-child, h6 + list > li:first-child {
-    page-break-inside: avoid;
   }
   .page-front,
   .page-normal,

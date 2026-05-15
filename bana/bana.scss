@@ -6,6 +6,66 @@
 
 @namespace epub url(http://www.idpf.org/2007/ops);
 
+%h1 {
+	page-break-before: always;
+	text-align: center;
+	margin-left: 3ch;
+	margin-right: 3ch;
+	margin-bottom: 1em;
+}
+
+%h2 {
+	margin-left: 4ch;
+}
+
+%h3 {
+	margin-left: 6ch;
+}
+
+%h1, %h2, %h3 {
+	margin-top: 1em;
+	page-break-after: avoid;
+}
+
+$h-mapping: (
+	h1: h1,
+	h2: h2,
+	h3: "h3, h4, h5, h6"
+);
+
+@for $rank from 1 through 3 {
+	@if map-has-key($h-mapping, h#{$rank}) {
+		$selector: map-get($h-mapping, h#{$rank});
+		#{$selector} {
+			@extend %h#{$rank};
+		}
+	}
+}
+
+p {
+	text-indent: 2ch;
+}
+
+li {
+	text-indent: -2ch;
+	margin-left: 2ch;
+}
+
+ul, ol, list {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	orphans: 2;
+
+	%h1 + &,
+	%h2 + &,
+	%h3 + & {
+		margin-top: 0;
+		> li:first-child {
+			page-break-inside: avoid;
+		}
+	}
+}
+
 @media embossed {
 
 	$allow-text-overflow-trimming: true;
@@ -79,66 +139,6 @@
 			content: -daisy-flow(transcriber-generated, document) // the transcriber generated and other preliminary
 			         -daisy-flow(document-toc, document)          // content must be set by the custom style sheet,
 			         -daisy-flow(preliminary, document);          // and must be given the corresponding page style
-		}
-	}
-
-	%h1 {
-		page-break-before: always;
-		text-align: center;
-		margin-left: 3ch;
-		margin-right: 3ch;
-		margin-bottom: 1em;
-	}
-
-	%h2 {
-		margin-left: 4ch;
-	}
-
-	%h3 {
-		margin-left: 6ch;
-	}
-
-	%h1, %h2, %h3 {
-		margin-top: 1em;
-		page-break-after: avoid;
-	}
-
-	$h-mapping: (
-		h1: h1,
-		h2: h2,
-		h3: "h3, h4, h5, h6"
-	);
-
-	@for $rank from 1 through 3 {
-		@if map-has-key($h-mapping, h#{$rank}) {
-			$selector: map-get($h-mapping, h#{$rank});
-			#{$selector} {
-				@extend %h#{$rank};
-			}
-		}
-	}
-
-	p {
-		text-indent: 2ch;
-	}
-
-	li {
-		text-indent: -2ch;
-		margin-left: 2ch;
-	}
-
-	ul, ol, list {
-		margin-top: 1em;
-		margin-bottom: 1em;
-		orphans: 2;
-
-		%h1 + &,
-		%h2 + &,
-		%h3 + & {
-			margin-top: 0;
-			> li:first-child {
-				page-break-inside: avoid;
-			}
 		}
 	}
 
