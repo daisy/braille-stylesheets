@@ -1,0 +1,192 @@
+@charset "UTF-8";
+/**
+ * Braille style sheet for United States and Canada (BANA)
+ *
+ * For more information see https://daisy.github.io/braille-stylesheets/bana
+ */
+@namespace epub url(http://www.idpf.org/2007/ops);
+@media embossed {
+  @page {
+    size: 40ch 25em;
+    margin-bottom: 0;
+    @top-center {
+      content: string(running-header);
+    }
+    @top-right {
+      content: "   " string(print-page);
+    }
+    @bottom-right {
+      content: "   " counter(page);
+    }
+  }
+  @page transcriber-generated {
+    counter-increment: transcriber-generated-page;
+    @top-center {
+      content: none;
+    }
+    @top-right {
+      content: none;
+    }
+    @bottom-right {
+      content: "   t" counter(transcriber-generated-page);
+    }
+  }
+  @page toc {
+    margin-bottom: 1;
+    counter-increment: transcriber-generated-page;
+    @top-center {
+      content: none;
+    }
+    @top-right {
+      content: none;
+    }
+    @bottom-right {
+      content: "   t" counter(transcriber-generated-page);
+    }
+  }
+  @page preliminary {
+    counter-increment: preliminary-page;
+    @top-center {
+      content: none;
+    }
+    @top-right {
+      content: none;
+    }
+    @bottom-right {
+      content: "   p" counter(preliminary-page);
+    }
+  }
+  @-daisy-volume {
+    @begin {
+      content: -daisy-flow(transcriber-generated, document) -daisy-flow(volume-toc, document);
+      counter-set: transcriber-generated-page 1 preliminary-page 1;
+    }
+  }
+  @-daisy-volume :first {
+    @begin {
+      content: -daisy-flow(transcriber-generated, document) -daisy-flow(document-toc, document) -daisy-flow(preliminary, document);
+    }
+  }
+  h1 {
+    page-break-before: always;
+    text-align: center;
+    margin-left: 3ch;
+    margin-right: 3ch;
+    margin-bottom: 1em;
+  }
+  h2 {
+    margin-left: 4ch;
+  }
+  h3, h4, h5, h6 {
+    margin-left: 6ch;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 1em;
+    page-break-after: avoid;
+  }
+  p {
+    text-indent: 2ch;
+  }
+  li {
+    text-indent: -2ch;
+    margin-left: 2ch;
+  }
+  ul, ol, list {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    orphans: 2;
+  }
+  h1 + ul, h2 + ul, h3 + ul, h4 + ul, h5 + ul, h6 + ul, h1 + ol, h2 + ol, h3 + ol, h4 + ol, h5 + ol, h6 + ol, h1 + list, h2 + list, h3 + list, h4 + list, h5 + list, h6 + list {
+    margin-top: 0;
+  }
+  h1 + ul > li:first-child, h2 + ul > li:first-child, h3 + ul > li:first-child, h4 + ul > li:first-child, h5 + ul > li:first-child, h6 + ul > li:first-child, h1 + ol > li:first-child, h2 + ol > li:first-child, h3 + ol > li:first-child, h4 + ol > li:first-child, h5 + ol > li:first-child, h6 + ol > li:first-child, h1 + list > li:first-child, h2 + list > li:first-child, h3 + list > li:first-child, h4 + list > li:first-child, h5 + list > li:first-child, h6 + list > li:first-child {
+    page-break-inside: avoid;
+  }
+  .page-front,
+  .page-normal,
+  .page-special,
+  [epub|type=pagebreak],
+  pagenum {
+    display: block;
+  }
+  .page-front:-daisy-top-of-page,
+  .page-normal:-daisy-top-of-page,
+  .page-special:-daisy-top-of-page,
+  [epub|type=pagebreak]:-daisy-top-of-page,
+  pagenum:-daisy-top-of-page {
+    display: none;
+  }
+  .page-front::before,
+  .page-normal::before,
+  .page-special::before,
+  [epub|type=pagebreak]::before,
+  pagenum::before {
+    content: leader("⠤");
+  }
+  .page-front,
+  .page-normal,
+  .page-special,
+  [epub|type=pagebreak],
+  pagenum {
+    margin-left: -40ch;
+    string-set: print-page content();
+  }
+  .page-front[title],
+  .page-normal[title],
+  .page-special[title],
+  [epub|type=pagebreak][title],
+  pagenum[title] {
+    string-set: print-page attr(title);
+  }
+  .page-front[aria-label]:empty::before,
+  .page-normal[aria-label]:empty::before,
+  .page-special[aria-label]:empty::before,
+  [epub|type=pagebreak][aria-label]:empty::before,
+  pagenum[aria-label]:empty::before {
+    content: leader("⠤") attr(aria-label);
+  }
+  .page-front[aria-label],
+  .page-normal[aria-label],
+  .page-special[aria-label],
+  [epub|type=pagebreak][aria-label],
+  pagenum[aria-label] {
+    string-set: print-page attr(aria-label);
+  }
+  @import "http://www.daisy.org/pipeline/modules/braille/html-to-pef/_generate-toc.scss";
+  #generated-document-toc,
+  #generated-volume-toc {
+    page: toc;
+  }
+  #generated-document-toc::-obfl-on-toc-start,
+  #generated-volume-toc::-obfl-on-toc-start {
+    content: "Contents";
+    display: block;
+    text-align: center;
+    margin: 0 3ch 1em 3ch;
+  }
+  #generated-document-toc::-obfl-on-volume-start,
+  #generated-volume-toc::-obfl-on-volume-start {
+    content: "Volume " counter(-obfl-started-volume-number);
+    display: block;
+    text-align: center;
+    margin: 1em 3ch;
+  }
+  #generated-document-toc li,
+  #generated-volume-toc li {
+    -obfl-right-text-indent: 6ch;
+  }
+  #generated-document-toc li a[href]::after,
+  #generated-volume-toc li a[href]::after {
+    content: " " leader("⠐") " " target-counter(attr(href), page);
+  }
+  #generated-document-toc li br::before,
+  #generated-volume-toc li br::before {
+    content: " ";
+  }
+  #generated-document-toc ul, #generated-document-toc ol, #generated-document-toc list,
+  #generated-volume-toc ul,
+  #generated-volume-toc ol,
+  #generated-volume-toc list {
+    margin: 0;
+  }
+}
